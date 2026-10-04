@@ -32,5 +32,16 @@ def index():
         return render_template('index.html', tasks=tasks)
     # return render_template('index.html', name='Dhairya')
 
+@app.route('/delete/<int:id>')
+def delete_task(id):
+    task_to_delete = db.get_or_404(Todo, id)
+    try:
+        db.session.delete(task_to_delete)
+        db.session.commit()
+        return redirect('/')
+    except Exception as e:
+        return f"Could not delete task: {e}"
+
+
 if __name__ == '__main__':
     app.run(debug=True)
