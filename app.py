@@ -42,6 +42,15 @@ def delete_task(id):
     except Exception as e:
         return f"Could not delete task: {e}"
 
+@app.route('/update/<int:id>')
+def update_task(id):
+    task_to_update = db.get_or_404(Todo, id) 
+    try:
+        task_to_update.completed = 0 if task_to_update.completed == 1 else 1
+        db.session.commit()
+        return redirect('/')
+    except Exception as e:
+        return f"Could not update task: {e}"
 
 if __name__ == '__main__':
     app.run(debug=True)
